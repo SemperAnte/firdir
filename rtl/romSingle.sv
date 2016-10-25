@@ -4,6 +4,7 @@
 // Author:        SemperAnte, semte@semte.ru
 // History:
 //    21.10.2016 - created
+//    24.10.2016 - done
 //--------------------------------------------------------------------------------
 // Memory implementation module
 // ROM, single port

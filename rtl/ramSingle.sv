@@ -4,6 +4,7 @@
 // Author:        SemperAnte, semte@semte.ru
 // History:
 //    21.10.2016 - created
+//    24.10.2016 - done
 //--------------------------------------------------------------------------------
 // Memory implementation module
 // RAM, single port
@@ -32,7 +33,7 @@ module ramSingle
          initial $display( "INIT_FILE : %0s", INIT_FILE );
       `endif
 
-      // simple dual-port, output unregistered
+      // simple dual-port, output registered
       if ( MEM_TYPE == "RAM_SINGLE_M10K" ) begin
          altsyncram
             #( .clock_enable_input_a          ( "BYPASS"                ),

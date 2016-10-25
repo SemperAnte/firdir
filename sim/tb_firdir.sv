@@ -28,12 +28,13 @@ module tb_firdir();
    logic signed[ DOUT_WDT - 1 : 0 ] dout;
    
    firdir
-     #( .FIR_ORDER  ( FIR_ORDER  ),
-        .COEF_WDT   ( COEF_WDT   ),
-        .DIN_WDT    ( DIN_WDT    ),
-        .ACC_WDT    ( ACC_WDT    ),
-        .DOUT_WDT   ( DOUT_WDT   ),
-        .DOUT_SHIFT ( DOUT_SHIFT ) )
+     #( .COEF_INIT_FILE ( "romcoef.mif" ),
+        .FIR_ORDER      ( FIR_ORDER     ),
+        .COEF_WDT       ( COEF_WDT      ),
+        .DIN_WDT        ( DIN_WDT       ),
+        .ACC_WDT        ( ACC_WDT       ),
+        .DOUT_WDT       ( DOUT_WDT      ),
+        .DOUT_SHIFT     ( DOUT_SHIFT    ) )
    uut
       ( .clk   ( clk   ),
         .reset ( reset ),

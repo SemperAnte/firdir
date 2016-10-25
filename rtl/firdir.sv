@@ -10,12 +10,14 @@
 // see bit-accurate matlab model
 //--------------------------------------------------------------------------------
 module firdir
-   #( parameter int FIR_ORDER  = 511, // order of filter ( number of coef - 1 )
-                int COEF_WDT   = 18,  // coef width [-1 1)
-                int DIN_WDT    = 16,  // input data width [-1 1)
-                int ACC_WDT    = 21,  // accumulator width
-                int DOUT_WDT   = 16,  // output data width [-1 1)
-                int DOUT_SHIFT = 1 )  // shift left output data with saturate
+   #( parameter logic [ 8 * 100 : 0 ]
+                    COEF_INIT_FILE = "romcoef.mif", // rom coefficients initialization file
+                int FIR_ORDER     = 511,            // order of filter ( number of coef - 1 )
+                int COEF_WDT      = 18,             // coef width [-1 1)
+                int DIN_WDT       = 16,             // input data width [-1 1)
+                int ACC_WDT       = 21,             // accumulator width
+                int DOUT_WDT      = 16,             // output data width [-1 1)
+                int DOUT_SHIFT    = 1 )             // shift left output data with saturate
     ( input  logic                            clk,
       input  logic                            reset,  // async reset
       
@@ -31,14 +33,15 @@ module firdir
    
    logic signed            [ DIN_WDT - 1 : 0 ] dReg;
    logic signed [ DIN_WDT + COEF_WDT - 1 : 0 ] mult;
-   logic signed            [ ACC_WDT - 1 : 0 ] acc;
+   logic signed            [ ACC_WDT - 1 : 0 ] acc;   
    
-   logic signed           [ DOUT_WDT - 1 : 0 ] sat; // comb, saturate acc
    // nres control
    logic           nresEn;
    logic [ 1 : 0 ] nresCnt;
    // comb part, sample for mult
-   logic signed [ DIN_WDT - 1 : 0 ] smp;
+   logic signed  [ DIN_WDT - 1 : 0 ] smp;
+   logic signed [ DOUT_WDT - 1 : 0 ] sat; // comb, saturate acc
+   
    // ram / rom connections
    logic                                ramWr;  // comb
    logic        [ RAM_ADR_WDT - 1 : 0 ] ramAdr; // counter
@@ -111,7 +114,7 @@ module firdir
          end
       endcase
       
-      // multiolier with accumulator
+      // multiplier with accumulator
       mult <= smp * romQ;
       if ( state == ST3 ) begin // set acc = mult
          acc <= $signed( mult[ DIN_WDT + COEF_WDT - 1 : COEF_WDT - 1 ] ); // width DIN_WDT + 1
@@ -169,7 +172,7 @@ module firdir
    // ROM with coefficients
    romSingle
       #( .MEM_TYPE  ( "ROM_SINGLE_M10K" ),
-         .INIT_FILE ( "romcoef.mif"     ),
+         .INIT_FILE ( COEF_INIT_FILE    ),
          .DATA_WDT  ( COEF_WDT          ),
          .ADR_WDT   ( ROM_ADR_WDT       ),
          .WORD_NUM  ( FIR_ORDER + 1     ) )

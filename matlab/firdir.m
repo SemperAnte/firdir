@@ -15,7 +15,7 @@ DOUT_SHIFT = 1;    % output data left shift with saturate
 
 % function from fda tool -> File -> 
 % Generate Matlab Code ->  Filter Design Function
-Hd = fdafunc_firdir;
+Hd = fdafunc;
 FIR_ORDER = length( Hd.Numerator ) - 1;
 
 % or manual description
@@ -37,7 +37,7 @@ set( Hd, 'Arithmetic',        'fixed', ...
          'FilterInternals',  'SpecifyPrecision', ...
          'ProductWordLength', DIN_WDT + 1, ...
          'ProductFracLength', DIN_WDT - 1, ...
-         'RoundMode',         'floor', ...
+         'RoundMode',         'Floor', ...
          'OverflowMode',      'Wrap' );
 normalize( Hd );
 coef = fi( Hd.Numerator, ... % coefficients
@@ -89,7 +89,7 @@ doutMat.OverflowAction = 'Saturate';
 doutMat = bitshift( doutMat, DOUT_SHIFT ); % shift
 doutMat = sfi( doutMat, DOUT_WDT, DOUT_WDT - ( Hd.AccumWordLength - Hd.AccumFracLength ) );
 doutMat = reinterpretcast( doutMat, numerictype( 1, DOUT_WDT, DOUT_WDT - 1 ) );
-%plot( doutMat );
+plot( doutMat );
 
 %% autorun Modelsim
 if ( exist( [ fpathSim 'flag.txt' ], 'file' ) )
