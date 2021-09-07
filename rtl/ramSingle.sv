@@ -20,8 +20,8 @@ module ramSingle
     output logic [DATA_WIDTH-1 : 0] q);
     
     // info
-    `define INFO_MODE     
-    `ifdef INFO_MODE
+    //`define RAM_INFO_MODE     
+    `ifdef RAM_INFO_MODE
     initial begin
         if (MEM_TYPE == "RAM_SINGLE_M10K")
             $display("MEM_TYPE : RAM_SINGLE_M10K"); 

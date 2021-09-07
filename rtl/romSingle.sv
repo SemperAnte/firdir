@@ -18,8 +18,8 @@ module romSingle
      output logic [DATA_WIDTH-1 : 0] q);
      
     // info
-    `define INFO_MODE     
-    `ifdef INFO_MODE
+    //`define ROM_INFO_MODE     
+    `ifdef ROM_INFO_MODE
     initial begin
         if (MEM_TYPE == "ROM_SINGLE_M10K")
             $display("MEM_TYPE : ROM_SINGLE_M10K"); 
